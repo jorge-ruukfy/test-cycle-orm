@@ -1,0 +1,13 @@
+{
+    "minimum-stability": "dev",
+    "require": {
+        "cycle/orm": "^2.0.x-dev",
+        "cycle/annotated": "2.0.x-dev",
+        "symfony/var-dumper": "5.4.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Acme\\": "src/"
+        }
+    }
+}
