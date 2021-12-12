@@ -2,28 +2,42 @@
 
 namespace Acme\Entity;
 
+use Acme\VO\Comment as CommentVO;
+use Acme\VO\Id;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation\BelongsTo;
-use Cycle\Annotated\Annotation\Relation\HasMany;
+use Cycle\ORM\Mapper\PromiseMapper;
 
-#[Entity()]
-class Comment {
-    #[Column(type: 'bigInteger')]
-    public ?int $id = null;
+#[Entity(mapper: PromiseMapper::class)]
+class Comment
+{
 
-    #[Column(type: 'bigInteger')]
-    public ?int $user_id = null;
+    #[BelongsTo(User::class, 'user_id', 'id')]
+    private ?User $user = null;
 
-    #[Column(type: 'text', primary: true)]
-    public ?string $comment = null;
+    public function __construct(
+        #[Column(type: 'bigInteger', typecast: Id::class)]
+        private Id $id,
+        #[Column(type: 'text', primary: true, typecast: CommentVO::class)]
+        private ?CommentVO $comment
+    ) {
+    }
 
-    #[BelongsTo(User::class,'user_id','id')]
-    public ?User $user = null;
+    public function getId(): Id
+    {
+        return $this->id;
+    }
 
-    public function __construct(int $id, string $comment){
-        $this->id = $id;
-        $this->comment = $comment;
 
+    public function getComment(): ?CommentVO
+    {
+        return $this->comment;
+    }
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
     }
 }
