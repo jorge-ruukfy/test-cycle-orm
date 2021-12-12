@@ -1,134 +1,107 @@
 <?php 
-return array (
-  'comment' => 
-  array (
-    1 => 'Acme\\Entity\\Comment',
-    2 => 'Cycle\\ORM\\Mapper\\PromiseMapper',
-    3 => 'Cycle\\ORM\\Select\\Source',
-    4 => 'Cycle\\ORM\\Select\\Repository',
-    5 => 'default',
-    6 => 'comments',
-    7 => 
-    array (
-      0 => 'comment',
-    ),
-    8 => 
-    array (
-      0 => 'comment',
-    ),
-    9 => 
-    array (
-      'id' => 'id',
-      'comment' => 'comment',
-      'user_id' => 'user_id',
-    ),
-    10 => 
-    array (
-      'user' => 
-      array (
-        0 => 12,
-        1 => 'user',
-        3 => 10,
-        2 => 
-        array (
-          30 => true,
-          31 => false,
-          33 => 'user_id',
-          32 => 'id',
-        ),
-      ),
-    ),
-    12 => NULL,
-    13 => 
-    array (
-      'id' => 
-      array (
-        0 => 'Acme\\VO\\Id',
-        1 => 'typecast',
-      ),
-      'comment' => 
-      array (
-        0 => 'Acme\\VO\\Comment',
-        1 => 'typecast',
-      ),
-      'user_id' => 
-      array (
-        0 => 'Acme\\VO\\Id',
-        1 => 'typecast',
-      ),
-    ),
-    14 => 
-    array (
-    ),
-    19 => NULL,
-  ),
-  'user' => 
-  array (
-    1 => 'Acme\\Entity\\User',
-    2 => 'Cycle\\ORM\\Mapper\\PromiseMapper',
-    3 => 'Cycle\\ORM\\Select\\Source',
-    4 => 'Cycle\\ORM\\Select\\Repository',
-    5 => 'default',
-    6 => 'users',
-    7 => 
-    array (
-      0 => 'id',
-    ),
-    8 => 
-    array (
-      0 => 'id',
-    ),
-    9 => 
-    array (
-      'id' => 'id',
-      'name' => 'name',
-    ),
-    10 => 
-    array (
-      'comments' => 
-      array (
-        0 => 11,
-        1 => 'comment',
-        3 => 11,
-        2 => 
-        array (
-          30 => true,
-          31 => false,
-          41 => 
-          array (
-          ),
-          42 => 
-          array (
-          ),
-          33 => 
-          array (
+return [
+    'comment' => [
+        \Cycle\ORM\Schema::ENTITY => 'Acme\\Entity\\Comment',
+        \Cycle\ORM\Schema::MAPPER => 'Cycle\\ORM\\Mapper\\PromiseMapper',
+        \Cycle\ORM\Schema::SOURCE => 'Cycle\\ORM\\Select\\Source',
+        \Cycle\ORM\Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
+        \Cycle\ORM\Schema::DATABASE => 'default',
+        \Cycle\ORM\Schema::TABLE => 'comments',
+        \Cycle\ORM\Schema::PRIMARY_KEY => [
+            0 => 'comment',
+        ],
+        \Cycle\ORM\Schema::FIND_BY_KEYS => [
+            0 => 'comment',
+        ],
+        \Cycle\ORM\Schema::COLUMNS => [
+            'id' => 'id',
+            'comment' => 'comment',
+            'user_id' => 'user_id',
+        ],
+        \Cycle\ORM\Schema::RELATIONS => [
+            'user' => [
+                \Cycle\ORM\Relation::TYPE => 12,
+                \Cycle\ORM\Relation::EMBEDDED => 'user',
+                \Cycle\ORM\Relation::LOAD => 10,
+                \Cycle\ORM\Relation::SCHEMA => [
+                    \Cycle\ORM\Relation::CASCADE => true,
+                    \Cycle\ORM\Relation::NULLABLE => false,
+                    \Cycle\ORM\Relation::INNER_KEY => 'user_id',
+                    \Cycle\ORM\Relation::OUTER_KEY => 'id',
+                ],
+            ],
+        ],
+        \Cycle\ORM\Schema::SCOPE => NULL,
+        \Cycle\ORM\Schema::TYPECAST => [
+            'id' => [
+                0 => 'Acme\\VO\\Id',
+                1 => 'typecast',
+            ],
+            'comment' => [
+                0 => 'Acme\\VO\\Comment',
+                1 => 'typecast',
+            ],
+            'user_id' => [
+                0 => 'Acme\\VO\\Id',
+                1 => 'typecast',
+            ],
+        ],
+        \Cycle\ORM\Schema::SCHEMA => [
+        ],
+        \Cycle\ORM\Schema::TYPECAST_HANDLER => NULL,
+    ],
+    'user' => [
+        \Cycle\ORM\Schema::ENTITY => 'Acme\\Entity\\User',
+        \Cycle\ORM\Schema::MAPPER => 'Cycle\\ORM\\Mapper\\PromiseMapper',
+        \Cycle\ORM\Schema::SOURCE => 'Cycle\\ORM\\Select\\Source',
+        \Cycle\ORM\Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
+        \Cycle\ORM\Schema::DATABASE => 'default',
+        \Cycle\ORM\Schema::TABLE => 'users',
+        \Cycle\ORM\Schema::PRIMARY_KEY => [
             0 => 'id',
-          ),
-          32 => 
-          array (
-            0 => 'user_id',
-          ),
-          4 => NULL,
-        ),
-      ),
-    ),
-    12 => NULL,
-    13 => 
-    array (
-      'id' => 
-      array (
-        0 => 'Acme\\VO\\Id',
-        1 => 'typecast',
-      ),
-      'name' => 
-      array (
-        0 => 'Acme\\VO\\Name',
-        1 => 'typecast',
-      ),
-    ),
-    14 => 
-    array (
-    ),
-    19 => NULL,
-  ),
-);
+        ],
+        \Cycle\ORM\Schema::FIND_BY_KEYS => [
+            0 => 'id',
+        ],
+        \Cycle\ORM\Schema::COLUMNS => [
+            'id' => 'id',
+            'name' => 'name',
+        ],
+        \Cycle\ORM\Schema::RELATIONS => [
+            'comments' => [
+                \Cycle\ORM\Relation::TYPE => 11,
+                \Cycle\ORM\Relation::EMBEDDED => 'comment',
+                \Cycle\ORM\Relation::LOAD => 11,
+                \Cycle\ORM\Relation::SCHEMA => [
+                    \Cycle\ORM\Relation::CASCADE => true,
+                    \Cycle\ORM\Relation::NULLABLE => false,
+                    \Cycle\ORM\Relation::WHERE => [
+                    ],
+                    \Cycle\ORM\Relation::ORDER_BY => [
+                    ],
+                    \Cycle\ORM\Relation::INNER_KEY => [
+                        0 => 'id',
+                    ],
+                    \Cycle\ORM\Relation::OUTER_KEY => [
+                        0 => 'user_id',
+                    ],
+                    \Cycle\ORM\Relation::COLLECTION_TYPE => NULL,
+                ],
+            ],
+        ],
+        \Cycle\ORM\Schema::SCOPE => NULL,
+        \Cycle\ORM\Schema::TYPECAST => [
+            'id' => [
+                0 => 'Acme\\VO\\Id',
+                1 => 'typecast',
+            ],
+            'name' => [
+                0 => 'Acme\\VO\\Name',
+                1 => 'typecast',
+            ],
+        ],
+        \Cycle\ORM\Schema::SCHEMA => [
+        ],
+        \Cycle\ORM\Schema::TYPECAST_HANDLER => NULL,
+    ],
+];

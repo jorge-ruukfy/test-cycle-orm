@@ -37,7 +37,7 @@ $dbal = new DatabaseManager(include_once('config/db.php'));
 $registry = new Registry($dbal);
 
 
-$schema = include('config/schemas.php');
+#$schema = include('config/schemas.php');
 
 $cmp = new Compiler();
 $cmp->compile($registry, [
@@ -64,7 +64,7 @@ function constants($className, bool $fullRef = true): ?array
 {
     if (class_exists($className)) {
         return array_map(
-            fn($i) => $fullRef ? "$className::$i" : $i,
+            fn($i) => $fullRef ? sprintf("%s::%s", $className, $i) : $i,
             array_flip((new \ReflectionClass($className))->getConstants())
         );
     }
@@ -81,7 +81,22 @@ function walk_key_value(array $array, callable $callable, mixed $userData = null
     }, []);
 }
 
-function dumpSchema($schema)
+function var_export_short($expression, bool $return = false): ?string
+{
+    $export = var_export($expression, true);
+    $export = preg_replace("/^([ ]*)(.*)/m", '$1$1$2', $export);
+    $array = preg_split("/\r\n|\n|\r/", $export);
+    $array = preg_replace(["/\s*array\s\($/", "/\)(,)?$/", "/\s=>\s$/"], [null, ']$1', ' => ['], $array);
+    $export = join(PHP_EOL, array_filter(["["] + $array));
+    if (!$return) {
+        echo $export;
+        return null;
+    } else {
+        return $export;
+    }
+}
+
+function reflectSchema($schema)
 {
     return walk_key_value($schema, function (&$value, &$key, $userData) {
         $value = walk_key_value($value, function (&$value, &$key, $userData) {
@@ -100,10 +115,18 @@ function dumpSchema($schema)
             }
         }, constants(Schema::class));
     });
+
 }
 
-dd(dumpSchema($schema));
+function dumpSchema($schema){
+    $dump = var_export_short(reflectSchema($schema), true);
+    $dump = preg_replace_callback('@\'([\w\\\\]+::[\w]+)\'@s', fn($matches) => '\\' . stripslashes($matches[1]), $dump);
+    return $dump;
+}
 
+
+file_put_contents('config/schemas.php', '<?php ' . PHP_EOL . 'return ' . dumpSchema($schema) . ';');
+die;
 $orm = new ORM(new Factory($dbal), new Schema($schema));
 //$u = new User(1,'jorge');
 
