@@ -121,7 +121,7 @@ return [
                     \Cycle\ORM\Relation::OUTER_KEY => [
                         0 => 'user_id',
                     ],
-                    \Cycle\ORM\Relation::COLLECTION_TYPE => NULL,
+                    \Cycle\ORM\Relation::COLLECTION_TYPE => 'Acme\\Collection\\SimpleCollection',
                 ],
             ],
         ],
@@ -181,7 +181,7 @@ return [
                     ],
                     \Cycle\ORM\Relation::THROUGH_WHERE => [
                     ],
-                    \Cycle\ORM\Relation::COLLECTION_TYPE => NULL,
+                    \Cycle\ORM\Relation::COLLECTION_TYPE => 'Acme\\Collection\\SimpleCollection',
                 ],
             ],
             'author' => [

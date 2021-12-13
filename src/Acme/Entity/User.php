@@ -2,12 +2,12 @@
 
 namespace Acme\Entity;
 
+use Acme\Collection\SimpleCollection;
 use Acme\VO\Id;
 use Acme\VO\Name;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation\HasMany;
-use Cycle\ORM\Mapper\PromiseMapper;
 
 #[Entity()]
 class User
@@ -19,10 +19,11 @@ class User
         #[Column(type: 'string', typecast: Name::class)]
         private ?Name $name
     ) {
+        $this->comments = new SimpleCollection();
     }
 
-    #[HasMany(target: Comment::class, innerKey: ['id'], outerKey: ['user_id'], cascade: true)]
-    private array $comments = [];
+    #[HasMany(target: Comment::class, innerKey: ['id'], outerKey: ['user_id'], cascade: true, collection: SimpleCollection::class)]
+    private iterable $comments;
 
 
     public function id(): Id
@@ -36,10 +37,8 @@ class User
         return $this->name;
     }
 
-    /**
-     * @return array
-     */
-    public function getComments(): array
+
+    public function getComments(): SimpleCollection
     {
         return $this->comments;
     }

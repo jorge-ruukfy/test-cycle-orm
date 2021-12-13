@@ -2,6 +2,7 @@
 
 namespace Acme\Entity;
 
+use Acme\Collection\SimpleCollection;
 use Acme\VO\Entry;
 use Acme\VO\Id;
 use Cycle\Annotated\Annotation\Column;
@@ -13,8 +14,15 @@ use Cycle\Annotated\Annotation\Relation\ManyToMany;
 class Post
 {
 
-    #[ManyToMany(Comment::class, 'id', 'id', 'post_id', 'comment_id', cascade: true, through: PostComment::class)]
-    private array $comments = [];
+    #[ManyToMany(Comment::class,
+        'id',
+        'id',
+        'post_id',
+        'comment_id',
+        cascade: true,
+        through: PostComment::class,
+        collection: SimpleCollection::class)]
+    private iterable $comments;
 
     public function __construct(
         #[Column(type: 'bigInteger', primary: true, typecast: Id::class)]
@@ -25,6 +33,7 @@ class Post
         private User $author
 
     ) {
+        $this->comments = new SimpleCollection();
     }
 
     public function getId(): Id
@@ -44,13 +53,13 @@ class Post
         return $this->author;
     }
 
-    public function getComments(): array
+    public function getComments(): SimpleCollection
     {
         return $this->comments;
     }
 
     public function addComment(Comment $comment)
     {
-        $this->comments=[...$this->getComments(),$comment];
+        $this->comments->append($comment);
     }
 }

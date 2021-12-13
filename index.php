@@ -5,6 +5,7 @@ use Acme\Entity\Comment;
 use Acme\Entity\Post;
 use Acme\Entity\User;
 use Acme\PHPSchemaDumper;
+use Acme\VO\Comment as CommentVO;
 use Acme\VO\Id;
 use Cycle\Annotated\Embeddings;
 use Cycle\Annotated\Entities;
@@ -34,13 +35,10 @@ $dbal = new DatabaseManager(include_once('config/db.php'));
 $dbal->setLogger(new DbLogger());
 
 
-
-
-
 function compile($dbal): array
 {
     $registry = new Registry($dbal);
-    $finder = (new Finder())->files()->in(['src/Entity']); // __DIR__ here is folder with entities
+    $finder = (new Finder())->files()->in(['src/Acme/Entity']); // __DIR__ here is folder with entities
     $classLocator = new ClassLocator($finder);
     $cmp = new Compiler();
     $cmp->compile($registry, [
@@ -63,9 +61,10 @@ function compile($dbal): array
     return $schema;
 }
 
-//compile($dbal);
-
 $schema = include('config/schemas.php');
+
+$schema = compile($dbal);
+
 
 $orm = new ORM(new Factory($dbal), new Schema($schema));
 //;
@@ -87,20 +86,11 @@ $p = (new Select($orm, Post::class))->load('comments')->fetchOne(['id' => 1]);
 
 $u = (new Select($orm, User::class))->fetchOne(['id' => 2]);
 
-$c = new Comment(Id::from(4), \Acme\VO\Comment::from('Wehehehe'), $u);
+$c = new Comment(Id::from(5), CommentVO::from('Wehehehe'), $u);
 
 
-//
 $p->addComment($c);
 
-//
-////
-////
-////
-////$c = new Comment(1, 'wehehe');
-////#$c->user = $u;
-////$u->comments[] = $c;
-//
 $t = new Cycle\ORM\Transaction\UnitOfWork($orm);
 ////$t->persist($u);
 $t->persist($p);
