@@ -17,12 +17,12 @@ class Id implements ValueObject
         return $this->value;
     }
 
-    public static function from(mixed $value):static
+    public static function from(mixed $value): static
     {
         return new static($value);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->value();
     }

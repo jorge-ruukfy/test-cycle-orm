@@ -7,20 +7,19 @@ use Acme\VO\Id;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation\BelongsTo;
-use Cycle\ORM\Mapper\PromiseMapper;
 
-#[Entity(mapper: PromiseMapper::class)]
+#[Entity()]
 class Comment
 {
 
-    #[BelongsTo(User::class, 'user_id', 'id')]
-    private ?User $user = null;
 
     public function __construct(
-        #[Column(type: 'bigInteger', typecast: Id::class)]
+        #[Column(type: 'bigInteger', primary: true, typecast: Id::class)]
         private Id $id,
-        #[Column(type: 'text', primary: true, typecast: CommentVO::class)]
-        private ?CommentVO $comment
+        #[Column(type: 'text', typecast: CommentVO::class)]
+        private ?CommentVO $comment,
+        #[BelongsTo(User::class, 'user_id', 'id')]
+        private ?User $user = null
     ) {
     }
 

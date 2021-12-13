@@ -9,7 +9,7 @@ use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation\HasMany;
 use Cycle\ORM\Mapper\PromiseMapper;
 
-#[Entity(mapper: PromiseMapper::class)]
+#[Entity()]
 class User
 {
 
@@ -21,7 +21,7 @@ class User
     ) {
     }
 
-    #[HasMany(target: Comment::class, innerKey: ['id'], outerKey: ['user_id'], cascade: true, load: 'eager')]
+    #[HasMany(target: Comment::class, innerKey: ['id'], outerKey: ['user_id'], cascade: true)]
     private array $comments = [];
 
 
