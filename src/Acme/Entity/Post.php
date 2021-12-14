@@ -2,6 +2,7 @@
 
 namespace Acme\Entity;
 
+use Acme\Collection\CollectionFactory;
 use Acme\Collection\SimpleCollection;
 use Acme\VO\Entry;
 use Acme\VO\Id;
@@ -33,7 +34,8 @@ class Post
         private User $author
 
     ) {
-        $this->comments = new SimpleCollection();
+        $this->comments = CollectionFactory::make('simple');
+
     }
 
     public function getId(): Id
@@ -53,7 +55,7 @@ class Post
         return $this->author;
     }
 
-    public function getComments(): SimpleCollection
+    public function getComments(): iterable
     {
         return $this->comments;
     }

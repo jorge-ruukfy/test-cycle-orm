@@ -14,7 +14,7 @@ class SimpleCollection extends ArrayObject implements CollectionFactoryInterface
 
     public function withCollectionClass(string $class): static
     {
-        // TODO: Implement withCollectionClass() method.
+        return $this;
     }
 
     public function collect(iterable $data): iterable

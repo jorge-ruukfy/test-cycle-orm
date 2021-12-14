@@ -1,5 +1,7 @@
 <?php
 
+use Acme\Collection\CollectionFactory;
+use Acme\Collection\SimpleCollection;
 use Acme\Compiler;
 use Acme\DbLogger;
 use Acme\Entity\Comment;
@@ -14,7 +16,6 @@ use Cycle\ORM\Schema;
 use Cycle\ORM\Select;
 
 
-
 require_once "vendor/autoload.php";
 
 
@@ -24,10 +25,16 @@ $dbal->setLogger(new DbLogger());
 
 $schema = include('config/schemas.php');
 
-$schema = Compiler::compile($dbal,'config/schemas.php');
+$schema = Compiler::compile($dbal, 'config/schemas.php');
+
+$factory = (new Factory($dbal))
+    ->withCollectionFactory('simple', new SimpleCollection());
+
+CollectionFactory::register('simple', fn(?array $data) => new SimpleCollection($data ?? []));
+
+$orm = new ORM($factory, new Schema($schema));
 
 
-$orm = new ORM(new Factory($dbal), new Schema($schema));
 //;
 
 ///** @var User $u */
