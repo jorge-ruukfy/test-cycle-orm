@@ -1,0 +1,94 @@
+comment:
+    1: Acme\Entity\Comment
+    2: Cycle\ORM\PromiseMapper\PromiseMapper
+    3: Cycle\ORM\Select\Source
+    4: Cycle\ORM\Select\Repository
+    5: default
+    6: comments
+    7:
+        - id
+    8:
+        - id
+    9:
+        id: id
+        comment: comment
+        user_id: user_id
+    10:
+        user: { 0: 12, 1: user, 3: 10, 2: { 30: true, 31: false, 33: [user_id], 32: [id] } }
+    12: null
+    13:
+        id: [Acme\VO\Id, typecast]
+        comment: [Acme\VO\Comment, typecast]
+        user_id: [Acme\VO\Id, typecast]
+    14: {  }
+    19: null
+postComment:
+    1: Acme\Entity\PostComment
+    2: Cycle\ORM\PromiseMapper\PromiseMapper
+    3: Cycle\ORM\Select\Source
+    4: Cycle\ORM\Select\Repository
+    5: default
+    6: posts_x_comments
+    7:
+        - post_id
+        - comment_id
+    8:
+        - post_id
+        - comment_id
+    9:
+        post_id: post_id
+        comment_id: comment_id
+    10: {  }
+    12: null
+    13:
+        post_id: [Acme\VO\Id, typecast]
+        comment_id: [Acme\VO\Id, typecast]
+    14: {  }
+    19: null
+user:
+    1: Acme\Entity\User
+    2: Cycle\ORM\PromiseMapper\PromiseMapper
+    3: Cycle\ORM\Select\Source
+    4: Cycle\ORM\Select\Repository
+    5: default
+    6: users
+    7:
+        - id
+    8:
+        - id
+    9:
+        id: id
+        name: name
+    10:
+        comments: { 0: 11, 1: comment, 3: 10, 2: { 30: true, 31: false, 41: {  }, 42: {  }, 33: [id], 32: [user_id], 4: null } }
+    12: null
+    13:
+        id: [Acme\VO\Id, typecast]
+        name: [Acme\VO\Name, typecast]
+    14: {  }
+    19: null
+post:
+    1: Acme\Entity\Post
+    2: Cycle\ORM\PromiseMapper\PromiseMapper
+    3: Cycle\ORM\Select\Source
+    4: Cycle\ORM\Select\Repository
+    5: default
+    6: posts
+    7:
+        - id
+    8:
+        - id
+    9:
+        id: id
+        entry: entry
+        user_id: user_id
+    10:
+        comments: { 0: 14, 1: comment, 3: 10, 2: { 30: true, 31: false, 41: {  }, 42: {  }, 33: [id], 32: [id], 52: postComment, 50: post_id, 51: comment_id, 54: {  }, 4: null } }
+        user: { 0: 12, 1: user, 3: 10, 2: { 30: true, 31: false, 33: user_id, 32: [id] } }
+    12: null
+    13:
+        id: [Acme\VO\Id, typecast]
+        entry: [Acme\VO\Entry, typecast]
+        user_id: [Acme\VO\Id, typecast]
+    14: {  }
+    19: null

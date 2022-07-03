@@ -1,10 +1,12 @@
 {
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
-        "cycle/orm": "^2.0.x-dev",
-        "cycle/annotated": "2.0.x-dev",
-        "symfony/var-dumper": "5.4.x-dev",
-        "doctrine/collections": "1.6.x-dev"
+        "cycle/orm": "^2.1",
+        "doctrine/collections": "^1.6",
+        "symfony/var-dumper": "^6.1",
+        "cycle/annotated": "^3.1",
+        "cycle/orm-promise-mapper": "^1.0",
+        "symfony/yaml": "^6.1"
     },
     "autoload": {
         "psr-4": {

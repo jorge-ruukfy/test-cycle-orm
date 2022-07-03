@@ -1,7 +1,6 @@
 <?php
 
-use Acme\Collection\CollectionFactory;
-use Acme\Collection\SimpleCollection;
+
 use Acme\Compiler;
 use Acme\DbLogger;
 use Acme\Entity\Comment;
@@ -27,10 +26,12 @@ $schema = include('config/schemas.php');
 
 $schema = Compiler::compile($dbal, 'config/schemas.php');
 
-$factory = (new Factory($dbal))
-    ->withCollectionFactory('simple', new SimpleCollection());
 
-CollectionFactory::register('simple', fn(?array $data) => new SimpleCollection($data ?? []));
+//$factory = new Factory($dbal, null, null, new SimpleCollection());
+$factory = new Factory($dbal, null, null);
+
+
+//CollectionFactory::register('simple', fn(?array $data) => new SimpleCollection($data ?? []));
 
 $orm = new ORM($factory, new Schema($schema));
 
@@ -50,18 +51,21 @@ $orm = new ORM($factory, new Schema($schema));
 
 //$u = new User(Id::from(2), Name::from('albert'));
 
-$p = (new Select($orm, Post::class))->load('comments')->fetchOne(['id' => 1]);
+$p = (new Select($orm, Post::class))->fetchOne(['id' => '5d6f715f-335a-410c-bf6d-5be08433c350']);
+dd($p->getComments());
+
 
 $u = (new Select($orm, User::class))->fetchOne(['id' => 2]);
-
-$c = new Comment(Id::from(5), CommentVO::from('Wehehehe'), $u);
-
+//
+$c = new Comment(Id::from(3), CommentVO::from('Wehehehe'), $u);
 
 $p->addComment($c);
+dd(count($p->getComments()));
 
-$t = new Cycle\ORM\Transaction\UnitOfWork($orm);
+
+//$t = new Cycle\ORM\Transaction\UnitOfWork($orm);
 ////$t->persist($u);
-$t->persist($p);
+//$t->persist($p);
 
 //foreach($u->comments as $comment){
 //    $t->persist($comment);

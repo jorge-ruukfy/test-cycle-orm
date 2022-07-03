@@ -12,15 +12,15 @@ use Cycle\Schema\Generator\GenerateTypecast;
 use Cycle\Schema\Generator\RenderRelations;
 use Cycle\Schema\Generator\RenderTables;
 use Cycle\Schema\Generator\ResetTables;
-use Cycle\Schema\Generator\SyncTables;
 use Cycle\Schema\Generator\ValidateEntities;
 use Cycle\Schema\Registry;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 class Compiler
 {
-    public static function compile($dbal,$output=null): array
+    public static function compile($dbal, $output = null): array
     {
         $registry = new Registry($dbal);
         $finder = (new Finder())->files()->in(['src/Acme/Entity']); // __DIR__ here is folder with entities
@@ -36,12 +36,15 @@ class Compiler
             new RenderTables(),      // declare table schemas
             new RenderRelations(),   // declare relation keys and indexes
             new MergeIndexes(),             // add @Table column declarations
-            new SyncTables(),        // sync table changes to database
+            //new SyncTables(),        // sync table changes to database
             new GenerateTypecast(),  // typecast non string columns
         ]);
+
         $schema = $cmp->getSchema();
 
-        PHPSchemaDumper::dump($schema, $output);
+        if ($output) {
+            file_put_contents($output, Yaml::dump($schema,3));
+        }
 
         return $schema;
     }

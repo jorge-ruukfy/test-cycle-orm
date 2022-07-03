@@ -2,40 +2,38 @@
 
 namespace Acme\Entity;
 
-use Acme\Collection\CollectionFactory;
-use Acme\Collection\SimpleCollection;
 use Acme\VO\Entry;
 use Acme\VO\Id;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation\BelongsTo;
 use Cycle\Annotated\Annotation\Relation\ManyToMany;
+use Cycle\ORM\Collection\Pivoted\PivotedCollection;
+use Cycle\ORM\PromiseMapper\PromiseMapper;
+use Cycle\ORM\Reference\Promise;
+use Cycle\ORM\Reference\ReferenceInterface;
 
-#[Entity()]
+#[Entity(mapper: PromiseMapper::class)]
 class Post
 {
 
-    #[ManyToMany(Comment::class,
-        'id',
-        'id',
-        'post_id',
-        'comment_id',
-        cascade: true,
-        through: PostComment::class,
-        collection: SimpleCollection::class)]
-    private iterable $comments;
+    #[ManyToMany(
+        Comment::class,
+        through: PostsComments::class,
+        load: 'eager'
+    )]
+    private Promise|iterable $comments = [];
 
     public function __construct(
-        #[Column(type: 'bigInteger', primary: true, typecast: Id::class)]
+        #[Column(type: 'uuid', primary: true, typecast: Id::class)]
         private Id $id,
         #[Column(type: 'text', typecast: Entry::class)]
         private Entry $entry,
-        #[BelongsTo(User::class, 'user_id', 'id')]
-        private User $author
+        #[BelongsTo(target: User::class, load: 'lazy')]
+        public ReferenceInterface|User $user
 
     ) {
-        $this->comments = CollectionFactory::make('simple');
-
+        $this->comments = new PivotedCollection();
     }
 
     public function getId(): Id
@@ -50,18 +48,20 @@ class Post
     }
 
 
-    public function getAuthor(): ?User
+    public function getAuthor(): User|Promise
     {
-        return $this->author;
+        return $this->user;
     }
 
-    public function getComments(): iterable
+    public function getComments(): iterable|Promise
     {
         return $this->comments;
     }
 
     public function addComment(Comment $comment)
     {
-        $this->comments->append($comment);
+//        $comments = clone $this->comments;
+//        $comments->append($comment);
+//        $this->comments= $comments;
     }
 }
